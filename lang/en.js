@@ -11,7 +11,7 @@ CKEDITOR.plugins.setLang('btbutton', 'en', {
     buttonUrlLabel: 'URL',
     buttonTargetLabel: 'Target',
     buttonLink: 'Link',
-    buttonDefault: 'Default',
+    buttonSecondary: 'Secondary',
     buttonPrimary: 'Primary',
     buttonInfo: 'Info',
     buttonSuccess: 'Success',

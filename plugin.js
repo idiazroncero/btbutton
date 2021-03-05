@@ -26,8 +26,6 @@
 
                       if ($el.hasClass("btn-link")) {
                         this.data.btntype = "btn-link";
-                      } else if ($el.hasClass("btn-default")) {
-                        this.data.btntype = "btn-default";
                       } else if ($el.hasClass("btn-primary")) {
                         this.data.btntype = "btn-primary";
                       } else if ($el.hasClass("btn-info")) {
@@ -38,11 +36,27 @@
                         this.data.btntype = "btn-warning";
                       } else if ($el.hasClass("btn-danger")) {
                         this.data.btntype = "btn-danger";
+                      } else if ($el.hasClass("btn-light")) {
+                        this.data.btntype = "btn-light";
+                      } else if ($el.hasClass("btn-dark")) {
+                        this.data.btntype = "btn-dark";
+                      } else if ($el.hasClass("btn-outline-primary")) {
+                        this.data.btntype = "btn-outline-primary";
+                      } else if ($el.hasClass("btn-outline-info")) {
+                        this.data.btntype = "btn-outline-info";
+                      } else if ($el.hasClass("btn-outline-success")) {
+                        this.data.btntype = "btn-outline-success";
+                      } else if ($el.hasClass("btn-outline-warning")) {
+                        this.data.btntype = "btn-outline-warning";
+                      } else if ($el.hasClass("btn-outline-danger")) {
+                        this.data.btntype = "btn-outline-danger";
+                       }else if ($el.hasClass("btn-outline-light")) {
+                        this.data.btntype = "btn-outline-light";
+                      } else if ($el.hasClass("btn-outline-dark")) {
+                        this.data.btntype = "btn-outline-dark";
                       }
 
-                      if ($el.hasClass("btn-xs")) {
-                        this.data.btnsize = "btn-xs";
-                      } else if ($el.hasClass("btn-sm")) {
+                      if ($el.hasClass("btn-sm")) {
                         this.data.btnsize = "btn-sm";
                       } else if ($el.hasClass("btn-lg")) {
                         this.data.btnsize = "btn-lg";
@@ -90,10 +104,10 @@
                         var $el = jQuery(this.element.$);
 
                         if (this.data.btntype) {
-                            $el.removeClass('btn-link btn-default btn-primary btn-info btn-success btn-warning btn-danger').addClass(this.data.btntype);
+                            $el.removeClass('btn-link btn-primary btn-info btn-success btn-warning btn-danger btn-light btn-dark btn-outline-primary btn-outline-info btn-outline-success btn-outline-warning btn-outline-danger btn-outline-light btn-outline-dark').addClass(this.data.btntype);
                         }
 
-                        $el.removeClass('btn-xs btn-sm btn-lg');
+                        $el.removeClass('btn-sm btn-lg');
 			if (this.data.btnsize) {
                             $el.addClass(this.data.btnsize);
                         }

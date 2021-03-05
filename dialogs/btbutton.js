@@ -34,10 +34,10 @@ CKEDITOR.dialog.add('btbutton', function (editor) {
                                     [lang.buttonOutlineWarning, 'btn-outline-warning'],
                                     [lang.buttonDanger, 'btn-danger'],
                                     [lang.buttonOutlineDanger, 'btn-outine-danger'],
-                                    [lang.buttonDanger, 'btn-light'],
-                                    [lang.buttonOutlineDanger, 'btn-outline-light'],
-                                    [lang.buttonDanger, 'btn-dark'],
-                                    [lang.buttonOutlineDanger, 'btn-outline-dark'],
+                                    [lang.buttonLight, 'btn-light'],
+                                    [lang.buttonOutlineLight, 'btn-outline-light'],
+                                    [lang.buttonDark, 'btn-dark'],
+                                    [lang.buttonOutlineDark, 'btn-outline-dark'],
                                 ],
                                 setup: function (widget) {
                                     this.setValue(widget.data.btntype || '');

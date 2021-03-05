@@ -108,7 +108,7 @@
                         }
 
                         $el.removeClass('btn-sm btn-lg');
-			if (this.data.btnsize) {
+			                  if (this.data.btnsize) {
                             $el.addClass(this.data.btnsize);
                         }
 

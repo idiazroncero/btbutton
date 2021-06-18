@@ -77,7 +77,7 @@
       if (position === 0) {
         return 'left'
       } else {
-        return 'right';
+        return '';
       }
     },
 

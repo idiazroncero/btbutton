@@ -1,167 +1,200 @@
-(function () {
+(function ($) {
 
-    CKEDITOR.plugins.add('btbutton', {
-            lang: 'en,ru,pt-br,uk',
-            requires: 'widget,dialog',
-            icons: 'btbutton',
-            init: function (editor) {
-                // Allow any attributes.
-                editor.config.extraAllowedContent = '*(*);*{*}';
-                var lang = editor.lang.btbutton;
+  var btbuttonHelper = {
+    classes : {
+      types: [
+        'btn-link',
+        'btn-primary',
+        'btn-outline-primary',
+        'btn-secondary',
+        'btn-outline-secondary',
+        'btn-success',
+        'btn-outline-success',
+        'btn-info',
+        'btn-outline-info',
+        'btn-warning',
+        'btn-outline-warning',
+        'btn-danger',
+        'btn-outine-danger',
+        'btn-light',
+        'btn-outline-light',
+        'btn-dark',
+        'btn-outline-dark',
+      ],
+      sizes: [
+        'btn-sm',
+        'btn-lg'
+      ],
+    },
 
-                CKEDITOR.dialog.add('btbutton', this.path + 'dialogs/btbutton.js');
+    getClassesAsString: function(){
+      return this.classes.types.join(' ') + ' ' + this.classes.sizes.join(' ');
+    },
 
-                // Add widget
-                editor.ui.addButton('btbutton', {
-                    label: lang.buttonTitle,
-                    command: 'btbutton',
-                    icon: this.path + 'icons/btbutton.png'
-                });
+    detectButtonType : function($el){
+      var classes = this.classes.types;
+      return this.findFirstMatchInClasses(classes, $el);
+    },
 
-                editor.widgets.add('btbutton', {
-                    dialog: 'btbutton',
+    detectButtonSize : function($el){
+      var sizes = this.classes.sizes;
+      return this.findFirstMatchInClasses(sizes, $el);
+    },
 
-                    init: function () {
-                      var $el = jQuery(this.element.$);
+    detectIconName: function($el) {
+      var $icon = $('.btbutton-icon', $el);
+      if ($icon.length === 0) {
+        return false;
+      }
 
-                      if ($el.hasClass("btn-link")) {
-                        this.data.btntype = "btn-link";
-                      } else if ($el.hasClass("btn-primary")) {
-                        this.data.btntype = "btn-primary";
-                      } else if ($el.hasClass("btn-info")) {
-                        this.data.btntype = "btn-info";
-                      } else if ($el.hasClass("btn-success")) {
-                        this.data.btntype = "btn-success";
-                      } else if ($el.hasClass("btn-warning")) {
-                        this.data.btntype = "btn-warning";
-                      } else if ($el.hasClass("btn-danger")) {
-                        this.data.btntype = "btn-danger";
-                      } else if ($el.hasClass("btn-light")) {
-                        this.data.btntype = "btn-light";
-                      } else if ($el.hasClass("btn-dark")) {
-                        this.data.btntype = "btn-dark";
-                      } else if ($el.hasClass("btn-outline-primary")) {
-                        this.data.btntype = "btn-outline-primary";
-                      } else if ($el.hasClass("btn-outline-info")) {
-                        this.data.btntype = "btn-outline-info";
-                      } else if ($el.hasClass("btn-outline-success")) {
-                        this.data.btntype = "btn-outline-success";
-                      } else if ($el.hasClass("btn-outline-warning")) {
-                        this.data.btntype = "btn-outline-warning";
-                      } else if ($el.hasClass("btn-outline-danger")) {
-                        this.data.btntype = "btn-outline-danger";
-                       }else if ($el.hasClass("btn-outline-light")) {
-                        this.data.btntype = "btn-outline-light";
-                      } else if ($el.hasClass("btn-outline-dark")) {
-                        this.data.btntype = "btn-outline-dark";
-                      }
+      var class_array = $icon.attr('class').split(' ');
+      var result;
 
-                      if ($el.hasClass("btn-sm")) {
-                        this.data.btnsize = "btn-sm";
-                      } else if ($el.hasClass("btn-lg")) {
-                        this.data.btnsize = "btn-lg";
-                      }
+      // Extend this array if you need to support more libraries than
+      // font awesome
+      var exclude_classes = [
+        'fa'
+      ];
 
-                      this.data.href = $el.attr('href');
-
-                      this.data.target = $el.attr('target');
-
-                      this.data.text = jQuery('.text', $el).text();
-
-                      var bs_icon_left = jQuery('.bs-icon-left', $el);
-                      var bs_icon_right = jQuery('.bs-icon-right', $el);
-                      var fa_icon_left = jQuery('.fa-icon-left', $el);
-                      var fa_icon_right = jQuery('.fa-icon-right', $el);
-
-                      if (bs_icon_left.length > 0) {
-                        bs_icon_left.removeClass('bs-icon-left').removeClass('glyphicon');
-                        this.data.bsiconleft = bs_icon_left.attr('class');
-                        bs_icon_left.addClass('bs-icon-left').addClass('glyphicon');
-                      }
-
-                      if (bs_icon_right.length > 0) {
-                        bs_icon_right.removeClass('bs-icon-right').removeClass('glyphicon');
-                        this.data.bsiconright = bs_icon_right.attr('class');
-                        bs_icon_right.addClass('bs-icon-right').addClass('glyphicon');
-                      }
-
-                      if (fa_icon_left.length > 0) {
-                        fa_icon_left.removeClass('fa-icon-left').removeClass('fa');
-                        this.data.faiconleft = fa_icon_left.attr('class');
-                        fa_icon_left.addClass('fa-icon-left').addClass('fa');
-                      }
-
-                      if (fa_icon_right.length > 0) {
-                        fa_icon_right.removeClass('fa-icon-right').removeClass('fa');
-                        this.data.faiconright = fa_icon_right.attr('class');
-                        fa_icon_right.addClass('fa-icon-right').addClass('fa');
-                      }
-                    },
-
-                    template: '<a class="btn">' + '<span class="text"></span>' + '</a>',
-
-                    data: function () {
-                        var $el = jQuery(this.element.$);
-
-                        if (this.data.btntype) {
-                            $el.removeClass('btn-link btn-primary btn-info btn-success btn-warning btn-danger btn-light btn-dark btn-outline-primary btn-outline-info btn-outline-success btn-outline-warning btn-outline-danger btn-outline-light btn-outline-dark').addClass(this.data.btntype);
-                        }
-
-                        $el.removeClass('btn-sm btn-lg');
-			                  if (this.data.btnsize) {
-                            $el.addClass(this.data.btnsize);
-                        }
-
-                        if (this.data.href) {
-                          $el.attr('href', this.data.href);
-                          this.element.$.removeAttribute('data-cke-saved-href');
-                        }
-
-                        if (this.data.target && this.data.target != '') {
-                            $el.attr('target', this.data.target);
-                        }
-
-                        if (this.data.text) {
-                            jQuery('.text', $el).text(this.data.text);
-                        }
-
-                        if (this.data.hasOwnProperty('bsiconleft')) {
-                            jQuery('.bs-icon-left', $el).remove();
-                            if (this.data.bsiconleft) {
-                                $el.prepend('<span style="word-spacing: -1em;" class="bs-icon-left glyphicon ' + this.data.bsiconleft + '">&nbsp;</span>\n');
-                            }
-                        }
-
-                        if (this.data.hasOwnProperty('bsiconright')) {
-                            jQuery('.bs-icon-right', $el).remove();
-                            if (this.data.bsiconright) {
-                                $el.append('<span style="word-spacing: -1em;" class="bs-icon-right glyphicon ' + this.data.bsiconright + '">&nbsp;</span>\n');
-                            }
-                        }
-
-                        if (this.data.hasOwnProperty('faiconleft')) {
-                            jQuery('.fa-icon-left', $el).remove();
-                            if (this.data.faiconleft) {
-                                $el.prepend('<i style="word-spacing: -1em;" class="fa fa-icon-left ' + this.data.faiconleft + '">&nbsp;</i>\n');
-                            }
-                        }
-
-                        if (this.data.hasOwnProperty('faiconright')) {
-                            jQuery('.fa-icon-right', $el).remove();
-                            if (this.data.faiconright) {
-                                $el.append('<i style="word-spacing: -1em;" class="fa fa-icon-right ' + this.data.faiconright + '">&nbsp;</i>\n');
-                            }
-                        }
-                    },
-
-                    requiredContent: 'a(btn)',
-
-                    upcast: function (element) {
-                        return element.name == 'a' && element.hasClass('btn');
-                    }
-                });
-            }
+      // Find the class excluding all utility extra classes.
+      class_array.forEach(function(class_name){
+        if (!exclude_classes.includes(class_name)) {
+          result = class_name;
         }
-    );
+      })
 
-})();
+      return result;
+    },
+
+    detectIconPlacement: function($el) {
+      var $icon = $('.btbutton-icon', $el);
+      if ($icon.length === 0) {
+        return false;
+      }
+
+      var position = $el.index($icon);
+
+      if (position === 0) {
+        return 'left'
+      } else {
+        return 'right';
+      }
+    },
+
+    findFirstMatchInClasses: function(items, $el) {
+      for(var i = 0; i < items.length; i++) {
+        if ($el.hasClass(items[i])) {
+          return items[i];
+        }
+      }
+    },
+
+    applyButtonType: function($el, type) {
+      $el.removeClass(this.classes.types).addClass(type);
+    },
+
+    applyButtonSize: function($el, size) {
+      $el.removeClass(this.classes.sizes).addClass(size);
+    },
+
+    applyIcon: function($el, icon_name, position) {
+      $('.btbutton-icon', $el).remove();
+      // Non-breaking spaces are needed in order to avoid CKEditor from
+      // removing the whole HTML element.
+      var html = $('<span class="btbutton-icon">&nbsp;</span>\n');
+      html.addClass(this.processIconClasses(icon_name));
+
+      if (position === 'left') {
+        $el.prepend(html);
+      } else {
+        $el.append(html);
+      }
+    },
+
+    processIconClasses: function(icon_name) {
+      var classes = [];
+
+      // Remve the dot, in case any user introduced it.
+      classes.push(icon_name.replace(/^\./, ''));
+
+      // Detect fontawesome
+      if (/^fa-/i.test(icon_name)) {
+        classes.push('fa');
+      }
+
+      return classes;
+    }
+  }
+
+  CKEDITOR.plugins.add('btbutton', {
+    lang: 'en,ru,pt-br,uk',
+    requires: 'widget,dialog',
+    icons: 'btbutton',
+    init: function (editor) {
+      var lang = editor.lang.btbutton;
+      CKEDITOR.dialog.add('btbutton', this.path + 'dialogs/btbutton.js');
+
+      // Add widget
+      editor.ui.addButton('btbutton', {
+        label: lang.buttonTitle,
+        command: 'btbutton',
+        icon: this.path + 'icons/btbutton.png'
+      });
+
+      editor.widgets.add('btbutton', {
+
+        // Allow elements, attributes and classes needed.
+        allowedContent: 'a(*);a[href,target];span(*)',
+        dialog: 'btbutton',
+
+        init: function () {
+          var $el = $(this.element.$);
+          this.data.btntype = btbuttonHelper.detectButtonType($el);
+          this.data.btnsize = btbuttonHelper.detectButtonSize($el)
+          this.data.href = $el.attr('href');
+          this.data.target = $el.attr('target');
+          this.data.text = $('.text', $el).text();
+          this.data.iconname = btbuttonHelper.detectIconName($el);
+          this.data.iconplacement = btbuttonHelper.detectIconPlacement($el);
+        },
+
+        template: '<a class="btn"><span class="btbutton-icon"></span><span class="text"></span><span class="btbutton-icon"></span></a>',
+
+        data: function () {
+          var $el = $(this.element.$);
+
+          if (this.data.btntype) {
+            btbuttonHelper.applyButtonType($el, this.data.btntype);
+          }
+
+          if (this.data.btnsize) {
+            btbuttonHelper.applyButtonSize($el, this.data.btnsize);
+          }
+
+          if (this.data.href) {
+            $el.attr('href', this.data.href);
+            this.element.$.removeAttribute('data-cke-saved-href');
+          }
+
+          if (this.data.target && this.data.target != '') {
+            $el.attr('target', this.data.target);
+          }
+
+          if (this.data.text) {
+            $('.text', $el).text(this.data.text);
+          }
+
+          if (this.data.iconname) {
+            btbuttonHelper.applyIcon($el, this.data.iconname, this.data.iconplacement);
+          }
+        },
+
+        requiredContent: 'a(btn)',
+
+        upcast: function (element) {
+          return element.name == 'a' && element.hasClass('btn');
+        }
+      });
+    }
+  });
+})(jQuery);

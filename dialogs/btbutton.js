@@ -20,7 +20,7 @@ CKEDITOR.dialog.add('btbutton', function (editor) {
                   label: lang.buttonStyleLabel,
                   default: 'btn-primary',
                   items: [
-                    [lang.buttonLink, ''],
+                    [lang.buttonLink, 'btn-link'],
                     [lang.buttonPrimary, 'btn-primary'],
                     [lang.buttonOutlinePrimary, 'btn-outline-primary'],
                     [lang.buttonSecondary, 'btn-secondary'],
@@ -39,11 +39,12 @@ CKEDITOR.dialog.add('btbutton', function (editor) {
                     [lang.buttonOutlineDark, 'btn-outline-dark']
                   ],
                   setup: function (widget) {
-                    this.setValue(widget.data.btntype || '');
+                    if (widget.data.btntype) {
+                      this.setValue(widget.data.btntype);
+                    }
                   },
                   commit: function (widget) {
-                    var value = this.getValue() === "" ? 'btn-link' : this.getValue();
-                    widget.setData('btntype', value);
+                    widget.setData('btntype', this.getValue());
                   }
                 },
                 {
@@ -153,12 +154,15 @@ CKEDITOR.dialog.add('btbutton', function (editor) {
                   id: 'iconplacement',
                   label: 'Icon placement',
                   type: "select",
+                  default: 'right',
                   items: [
                     ['Left', 'left'],
-                    ['Right', '']
+                    ['Right', 'right']
                   ],
                   setup: function (widget) {
-                    this.setValue(widget.data.iconplacement || '');
+                    if (widget.data.iconplacement) {
+                      this.setValue(widget.data.iconplacement);
+                    }
                   },
                   commit: function (widget) {
                     widget.setData('iconplacement', this.getValue());

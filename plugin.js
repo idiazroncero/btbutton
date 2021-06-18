@@ -51,8 +51,9 @@
       var result;
 
       // Extend this array if you need to support more libraries than
-      // font awesome
+      // font awesome and/or other utility classes.
       var exclude_classes = [
+        'btbutton-icon',
         'fa'
       ];
 
@@ -77,7 +78,7 @@
       if (position === 0) {
         return 'left'
       } else {
-        return '';
+        return 'right';
       }
     },
 
@@ -99,15 +100,17 @@
 
     applyIcon: function($el, icon_name, position) {
       $('.btbutton-icon', $el).remove();
-      // Non-breaking spaces are needed in order to avoid CKEditor from
-      // removing the whole HTML element.
-      var html = $('<span class="btbutton-icon">&nbsp;</span>\n');
-      html.addClass(this.processIconClasses(icon_name));
+      if (icon_name) {
+        // Non-breaking spaces are needed in order to avoid CKEditor from
+        // removing the whole HTML element.
+        var html = $('<span class="btbutton-icon">&nbsp;</span>\n');
+        html.addClass(this.processIconClasses(icon_name));
 
-      if (position === 'left') {
-        $el.prepend(html);
-      } else {
-        $el.append(html);
+        if (position === 'left') {
+          $el.prepend(html);
+        } else {
+          $el.append(html);
+        }
       }
     },
 
@@ -163,13 +166,9 @@
         data: function () {
           var $el = $(this.element.$);
 
-          if (this.data.btntype) {
-            btbuttonHelper.applyButtonType($el, this.data.btntype);
-          }
-
-          if (this.data.btnsize) {
-            btbuttonHelper.applyButtonSize($el, this.data.btnsize);
-          }
+          btbuttonHelper.applyButtonType($el, this.data.btntype);
+          btbuttonHelper.applyButtonSize($el, this.data.btnsize);
+          btbuttonHelper.applyIcon($el, this.data.iconname, this.data.iconplacement);
 
           if (this.data.href) {
             $el.attr('href', this.data.href);
@@ -182,10 +181,6 @@
 
           if (this.data.text) {
             $('.text', $el).text(this.data.text);
-          }
-
-          if (this.data.iconname) {
-            btbuttonHelper.applyIcon($el, this.data.iconname, this.data.iconplacement);
           }
         },
 
